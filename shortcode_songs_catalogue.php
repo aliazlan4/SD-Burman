@@ -1,6 +1,7 @@
 <?php
     function songs_catalogue(){
         global $wpdb;
+        $data = getResultsForView();
 
         ?>
             <div class="row sorter_row">
@@ -36,7 +37,52 @@
                     Filter Results
                 </div>
                 <div class="col-md-10">
-                    <?php print_r(getResultsForView()); ?>
+                    <?php
+                        foreach ($data as $movie) {
+                            ?>
+                                <div class="row catalogue_colomn">
+                                    <div class="text-center embed-responsive embed-responsive-16by9" style="display:none; margin:20px;">
+                                        <iframe class="embed-responsive-item" id="player_<?php echo $movie["id"]; ?>" width="80%" height="400px" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <img width="125px" height="150px" src="http://c.saavncdn.com/001/S-D-Burman-The-Evergreen-Composer-2013-500x500.jpg">
+                                    </div>
+                                    <div class="col-md-10">
+                                        <h5><?php echo $movie["name"]; ?></h5>
+                                        <table class="song_detail_table" id="song_detail_table_<?php echo $movie["id"]; ?>">
+                                            <tr>
+                                                <td>Language</td><td> : </td><td id="song_detail_language_<?php echo $movie["id"] ?>">Urdu/Bengali</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Genre</td><td> : </td><td id="song_detail_genre_<?php echo $movie["id"] ?>">Motherhood</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Year</td><td> : </td><td id="song_detail_year_<?php echo $movie["id"] ?>">1990</td>
+                                            </tr>
+                                        </table></br>
+                                        <table class="table table-hover table_songs">
+                                            <?php
+                                                $count = 1;
+                                                foreach ($movie["songs"] as $song) {
+
+                                                    ?>
+                                                        <tr onclick="catalogue_play_song(<?php echo $movie["id"]; ?>, '<?php echo $song["url"]; ?>', '<?php echo getLanguage($song["language"]); ?>', '<?php echo getGenre($song["genre"]); ?>', '<?php echo $song["year"] ?>')"><td>
+                                                            <?php echo $count++ . ". " . $song["name"]; ?>
+
+                                                            <div style="float: right;">
+                                                                <img width="20px" src="<?php echo plugins_url( '/images/play_count.png' , __FILE__ ); ?>">
+                                                                <?php echo getVideoViews($song["url"]); ?>
+                                                            </div>
+                                                        </td></tr>
+                                                    <?php
+                                                }
+                                            ?>
+                                        </table>
+                                    </div>
+                                </div>
+                            <?php
+                        }
+                    ?>
                 </div>
             </div>
         <?php
@@ -57,21 +103,21 @@
                 foreach ($songs as $song) {
                     array_push($all_songs, array("id"=>$song->id, "name"=>$song->name, "type"=>$song->song_type, "language"=>$song->language, "genre"=>$song->genre, "url"=>$song->media_url, "year"=>$song->year));
                 }
-                $new_movie = array("id"=>$movie->id, "name"=>$movie->name, "director"=>$movie->director, "year"=>$movie->year, "actors"=>$movie->actors, "songs" => $all_songs);
+                $new_movie = array("id"=>$movie->id, "name"=>$movie->name, "director"=>$movie->director, "year"=>$movie->year, "actors"=>$movie->actors, "songs"=>$all_songs);
                 array_push($result, $new_movie);
             }
         }
 
         $number_of_songs = $wpdb->get_var("SELECT COUNT(*) FROM codistan_songs WHERE song_type=1 AND status=true");
         if($number_of_songs > 0){
-            $solo_songs = array();
             $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE song_type=1 AND status=true");
-
+            $all_songs = array();
             foreach ($songs as $song) {
-                
+                array_push($all_songs, array("id"=>$song->id, "name"=>$song->name, "type"=>$song->song_type, "language"=>$song->language, "genre"=>$song->genre, "url"=>$song->media_url, "year"=>$song->year));
             }
+            $solo_songs = array("id"=>0, "name"=>"-Solo Songs", "songs"=>$all_songs);
+            array_push($result, $solo_songs);
         }
-
         return $result;
     }
 ?>
