@@ -39,3 +39,49 @@ function catalogue_play_song(movie, url, language, genre, year){
     player.parentNode.style.display = "";
     table.style.display = "table";
 }
+
+function change_sorting(sorting, sorting_order){
+	var result = "";
+	if(sorting == "year"){
+		result = "?sorting=year";
+		if(sorting_order == "desc")
+			result = result + "&sorting_order=desc";
+	}
+	else{
+		if(sorting_order == "desc")
+			result = "?sorting_order=desc";
+	}
+
+	result = "http://" + window.location.hostname + window.location.pathname + result;
+	window.location = result;
+}
+
+jQuery(document).ready(function($) {
+	$('#filter_language').on('change', function() {
+	  	var option = this.value;
+		jQuery.ajax({
+			type: 'POST',
+			url: MyAjax.ajaxurl,
+			data: {"action": "changeLanguage", "filter_language":option},
+			success: function(data){
+		    	location.reload();
+			}
+		});
+	})
+});
+
+jQuery(document).ready(function($) {
+	$("#search_song").keypress(function(e) {
+		if(e.which == 13) {
+			var win = window.open("http://" + window.location.hostname + "/search?keyword=" + this.value, '_blank');
+			win.focus();
+	    }
+	});
+});
+
+function play_song(url){
+	var player = document.getElementById('video_player');
+	url = url.replace("watch?v=", "embed/");
+	player.src = url;
+	player.parentNode.style.display = "";
+}

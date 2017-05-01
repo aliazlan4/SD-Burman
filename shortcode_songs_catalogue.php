@@ -17,24 +17,24 @@
                     </div>
                     <div class="col-md-3 col-md-offset-1">
                         <div class="form-group">
-                            <label class="radio-inline">
-                                <input type="radio" name="sorter_radio_option" id="sorter_radio_option1" value="alpha"> Alphabetically
+                            <label class="radio-inline" onclick="change_sorting('alpha', '<?php echo $_GET["sorting_order"]; ?>')">
+                                <input type="radio" name="sorter_radio_option" id="sorter_radio_option1" value="alpha" <?php if(!isset($_GET["sorting"])) echo "checked"; ?>> Alphabetically
                             </label>
-                            <img style="max-width:25px" src="<?php echo plugins_url( '/images/sorter.png' , __FILE__ ); ?>">
-                            <label class="radio-inline">
-                                <input type="radio" name="sorter_radio_option" id="sorter_radio_option2" value="year"> Year
+                            <img style="max-width:25px" src="<?php echo plugins_url( '/images/sorter.png' , __FILE__ ); ?>"  onclick="change_sorting('alpha', '<?php if($_GET["sorting_order"] != "desc") echo "desc"; ?>')">
+                            <label class="radio-inline" onclick="change_sorting('year', '<?php echo $_GET["sorting_order"]; ?>')">
+                                <input type="radio" name="sorter_radio_option" id="sorter_radio_option2" value="year" <?php if(isset($_GET["sorting"])) echo "checked"; ?>> Year
                             </label>
-                            <img style="max-width:25px" src="<?php echo plugins_url( '/images/sorter.png' , __FILE__ ); ?>">
+                            <img style="max-width:25px" src="<?php echo plugins_url( '/images/sorter.png' , __FILE__ ); ?>"   onclick="change_sorting('year', '<?php if($_GET["sorting_order"] != "desc") echo "desc"; ?>')">
                         </div>
                     </div>
-                    <div class="col-md-3 col-md-offset-3">
-                        <input type="text" class="form-control" id="search_song" placeholder="Search">
-                    </div>
                 </form>
+                <div class="col-md-3 col-md-offset-3">
+                    <input type="text" class="form-control" id="search_song" placeholder="Search">
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-2">
-                    Filter Results
+                    <?php showFilters(); ?>
                 </div>
                 <div class="col-md-10">
                     <?php
@@ -48,7 +48,7 @@
                                         <img width="125px" height="150px" src="http://c.saavncdn.com/001/S-D-Burman-The-Evergreen-Composer-2013-500x500.jpg">
                                     </div>
                                     <div class="col-md-10">
-                                        <h5><?php echo $movie["name"]; ?></h5>
+                                        <h5><a href="/detail/?content=movie&id=<?php echo $movie["id"]; ?>" style="color:black"><?php echo $movie["name"]; ?></a></h5>
                                         <table class="song_detail_table" id="song_detail_table_<?php echo $movie["id"]; ?>">
                                             <tr>
                                                 <td>Language</td><td> : </td><td id="song_detail_language_<?php echo $movie["id"] ?>">Urdu/Bengali</td>
@@ -93,12 +93,24 @@
         global $wpdb;
 
         $result = array();
-        $movies = $wpdb->get_results("SELECT * FROM codistan_movies");
+        $movie;
+        if(isset($_GET["sorting"]) && $_GET["sorting"] == "year"){
+            if(isset($_GET["sorting_order"]) && $_GET["sorting_order"] == "desc")
+                $movies = $wpdb->get_results("SELECT * FROM codistan_movies ORDER BY year DESC");
+            else
+                $movies = $wpdb->get_results("SELECT * FROM codistan_movies ORDER BY year");
+        }
+        else{
+            if(isset($_GET["sorting_order"]) && $_GET["sorting_order"] == "desc")
+                $movies = $wpdb->get_results("SELECT * FROM codistan_movies ORDER BY name DESC");
+            else
+                $movies = $wpdb->get_results("SELECT * FROM codistan_movies ORDER BY name");
+        }
 
         foreach ($movies as $movie) {
-            $number_of_songs = $wpdb->get_var("SELECT COUNT(*) FROM codistan_songs WHERE movie=" . $movie->id . " AND status=true");
+            $number_of_songs = $wpdb->get_var("SELECT COUNT(*) FROM codistan_songs WHERE movie=" . $movie->id . " AND status=true" . getFilterQuery());
             if($number_of_songs > 0){
-                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE movie = " . $movie->id . " AND status=true");
+                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE movie = " . $movie->id . " AND status=true" . getFilterQuery());
                 $all_songs = array();
                 foreach ($songs as $song) {
                     array_push($all_songs, array("id"=>$song->id, "name"=>$song->name, "type"=>$song->song_type, "language"=>$song->language, "genre"=>$song->genre, "url"=>$song->media_url, "year"=>$song->year));
@@ -108,9 +120,9 @@
             }
         }
 
-        $number_of_songs = $wpdb->get_var("SELECT COUNT(*) FROM codistan_songs WHERE song_type=1 AND status=true");
+        $number_of_songs = $wpdb->get_var("SELECT COUNT(*) FROM codistan_songs WHERE song_type=1 AND status=true" . getFilterQuery());
         if($number_of_songs > 0){
-            $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE song_type=1 AND status=true");
+            $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE song_type=1 AND status=true" . getFilterQuery());
             $all_songs = array();
             foreach ($songs as $song) {
                 array_push($all_songs, array("id"=>$song->id, "name"=>$song->name, "type"=>$song->song_type, "language"=>$song->language, "genre"=>$song->genre, "url"=>$song->media_url, "year"=>$song->year));
@@ -119,5 +131,35 @@
             array_push($result, $solo_songs);
         }
         return $result;
+    }
+
+    function showFilters(){
+        global $wpdb;
+        ?>
+            <b>FILTER RESULT</b>
+            <form>
+                <div class='form-group'>
+                    <label for='filter_language' class='control-label'>Language</label>
+                    <select class='form-control' id='filter_language' name='filter_language'>
+                        <option value="0" >All</option>
+                        <?php
+                            $types = $wpdb->get_results("SELECT * FROM codistan_song_languages");
+                            foreach ($types as $type) {
+                                if($_SESSION["filter_language"] == $type->id)
+                                    echo "<option value='".$type->id."' selected='selected'>".$type->name."</option>";
+                                else
+                                    echo "<option value='".$type->id."'>".$type->name."</option>";
+                            }
+                        ?>
+                    </select>
+                </div>
+            </form>
+        <?php
+    }
+
+    function getFilterQuery(){
+        if($_SESSION["filter_language"] != 0)
+            return " AND language=" . $_SESSION["filter_language"];
+        return "";
     }
 ?>

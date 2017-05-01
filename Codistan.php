@@ -10,8 +10,11 @@ License: GPLv2 or later
 	defined('ABSPATH') or die("No script kiddies please!");
 
     function register_my_session(){
-	  if( !session_id() )
-	  	session_start();
+		if( !session_id() ){
+	  		session_start();
+		}
+		if(!isset($_SESSION["filter_language"]))
+			$_SESSION["filter_language"] = 0;
 	}
 	add_action('init', 'register_my_session');
 
@@ -24,6 +27,9 @@ License: GPLv2 or later
 	wp_register_script( 'codistan', plugins_url( '/js/script.js' , __FILE__ ), array('jquery') );
 	wp_enqueue_script('codistan1', plugins_url( '/js/jquery-ui.js' , __FILE__ ) , array( 'jquery' ));
 	wp_enqueue_style( 'codistan_style', plugins_url( '/style/style.css' , __FILE__ ) );
+
+	add_action('wp_ajax_changeLanguage', 'changeLanguage');
+	add_action('wp_ajax_nopriv_changeLanguage', 'changeLanguage');
 
     function codistan_activation() {
 		codistan_install();
@@ -146,4 +152,6 @@ License: GPLv2 or later
     include 'shortcode_contributions_form.php';
     include 'shortcode_featured_songs.php';
     include 'shortcode_songs_catalogue.php';
+    include 'shortcode_search_page.php';
+    include 'shortcode_detail_page.php';
 ?>
