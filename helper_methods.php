@@ -44,4 +44,9 @@
         $_SESSION["filter_language"] = $_POST["filter_language"];
         wp_die();
     }
+
+    function changeSortBy(){
+        $_SESSION["sort_by"] = $_POST["sort_by"];
+        wp_die();
+    }
 ?>

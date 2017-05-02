@@ -15,6 +15,8 @@ License: GPLv2 or later
 		}
 		if(!isset($_SESSION["filter_language"]))
 			$_SESSION["filter_language"] = 0;
+		if(!isset($_SESSION["sort_by"]))
+				$_SESSION["sort_by"] = "movie";
 	}
 	add_action('init', 'register_my_session');
 
@@ -30,6 +32,8 @@ License: GPLv2 or later
 
 	add_action('wp_ajax_changeLanguage', 'changeLanguage');
 	add_action('wp_ajax_nopriv_changeLanguage', 'changeLanguage');
+	add_action('wp_ajax_changeSortBy', 'changeSortBy');
+	add_action('wp_ajax_nopriv_changeSortBy', 'changeSortBy');
 
     function codistan_activation() {
 		codistan_install();

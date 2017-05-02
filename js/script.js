@@ -71,6 +71,20 @@ jQuery(document).ready(function($) {
 });
 
 jQuery(document).ready(function($) {
+	$('#sort_by_list').on('change', function() {
+	  	var option = this.value;
+		jQuery.ajax({
+			type: 'POST',
+			url: MyAjax.ajaxurl,
+			data: {"action": "changeSortBy", "sort_by":option},
+			success: function(data){
+		    	location.reload();
+			}
+		});
+	})
+});
+
+jQuery(document).ready(function($) {
 	$("#search_song").keypress(function(e) {
 		if(e.which == 13) {
 			var win = window.open("http://" + window.location.hostname + "/search?keyword=" + this.value, '_blank');
