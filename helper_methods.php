@@ -40,6 +40,16 @@
         return "";
     }
 
+    function getMovie($id){
+        global $wpdb;
+
+        $temp = $wpdb->get_results("SELECT * FROM codistan_movies WHERE id=".$id);
+        foreach ($temp as $temp1) {
+            return $temp1->name;
+        }
+        return "";
+    }
+
     function changeLanguage(){
         $_SESSION["filter_language"] = $_POST["filter_language"];
         wp_die();

@@ -13,7 +13,7 @@
                     ?>
                     <div class="col-md-3">
                         <div class="panel panel-default">
-                            <div class="panel-body">
+                            <div class="">
                                 <a href="/detail?content=song&id=<?php echo $song->id ?>"><img src="<?php echo getVideoThumbnail($song->media_url); ?>"></a>
                             </div>
                             <div class="panel-footer">

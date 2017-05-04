@@ -10,34 +10,34 @@ function changeFeaturedSong(url){
     player.src = url;
 }
 
-var current_player;
-var current_table;
-function catalogue_play_song(movie, url, language, genre, year){
-	jQuery(document).ready(function($) {
-		document.getElementById('song_detail_language_' + movie).innerHTML = language;
-	    document.getElementById('song_detail_genre_' + movie).innerHTML = genre;
-	    document.getElementById('song_detail_year_' + movie).innerHTML = year;
-	});
-
-    var player = document.getElementById('player_' + movie);
-	var table =  document.getElementById('song_detail_table_' + movie);
-
-    url = url.replace("watch?v=", "embed/");
+function changeSong_Catalogue(id, url){
+	url = url.replace("watch?v=", "embed/");
+    var player = document.getElementById('songs_player_' + id);
     player.src = url;
+}
 
-    if(current_player != player){
-        if(current_player != null){
-			current_player.parentNode.style.display = "none";
-            current_player.src = "";
+var current_div;
+var current_player;
+function play_song_catalogue(id, url){
+	var div = document.getElementById('player_div_' + id);
+	var player = document.getElementById('songs_player_' + id);
+	url = url.replace("watch?v=", "embed/");
 
-            current_table.style.display = "none";
-        }
-        current_player = player;
-        current_table = table;
-    }
+	if(div != current_div){
+		if(current_div != null){
+			current_player.src = "";
+			current_div.style.display = "none";
+		}
+		current_div = div;
+		current_player = player;
+	}
 
-    player.parentNode.style.display = "";
-    table.style.display = "table";
+	player.src = url;
+	div.style.display = "";
+
+	$('html, body').animate({
+        scrollTop: $("#" + "player_div_" + id).offset().top
+    }, 500);
 }
 
 function change_sorting(sorting, sorting_order){

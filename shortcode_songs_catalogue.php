@@ -49,55 +49,68 @@
     add_shortcode( 'codistan_songs_catalogue', 'songs_catalogue' );
 
     function viewByMovies(){
-        $data = getResultsForView_Movies();
-        foreach ($data as $movie) {
-            ?>
-                <div class="row catalogue_colomn">
-                    <div class="text-center embed-responsive embed-responsive-16by9" style="display:none; margin:20px;">
-                        <iframe class="embed-responsive-item" id="player_<?php echo $movie["id"]; ?>" width="80%" height="400px" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="col-md-2">
-                        <?php if($movie["image"] != null && $movie["image"] != ""){ ?>
-                            <img width="125px" height="150px" src="<?php echo "/wp-content/uploads/codistan/" . $movie["image"]; ?>">
-                        <?php } else { ?>
-                            <img width="125px" height="150px" src="http://c.saavncdn.com/001/S-D-Burman-The-Evergreen-Composer-2013-500x500.jpg">
-                        <?php } ?>
-                    </div>
-                    <div class="col-md-10">
-                        <h5><a href="/detail/?content=movie&id=<?php echo $movie["id"]; ?>" style="color:black"><?php echo $movie["name"]; ?></a></h5>
-                        <table class="song_detail_table" id="song_detail_table_<?php echo $movie["id"]; ?>">
-                            <tr>
-                                <td>Language</td><td> : </td><td id="song_detail_language_<?php echo $movie["id"] ?>">Urdu/Bengali</td>
-                            </tr>
-                            <tr>
-                                <td>Genre</td><td> : </td><td id="song_detail_genre_<?php echo $movie["id"] ?>">Motherhood</td>
-                            </tr>
-                            <tr>
-                                <td>Year</td><td> : </td><td id="song_detail_year_<?php echo $movie["id"] ?>">1990</td>
-                            </tr>
-                        </table></br>
-                        <table class="table table-hover table_songs">
-                            <?php
-                                $count = 1;
-                                foreach ($movie["songs"] as $song) {
-
-                                    ?>
-                                        <tr onclick="catalogue_play_song(<?php echo $movie["id"]; ?>, '<?php echo $song["url"]; ?>', '<?php echo getLanguage($song["language"]); ?>', '<?php echo getGenre($song["genre"]); ?>', '<?php echo $song["year"] ?>')"><td>
-                                            <?php echo $count++ . ". " . $song["name"]; ?>
-
-                                            <div style="float: right;">
-                                                <img width="20px" src="<?php echo plugins_url( '/images/play_count.png' , __FILE__ ); ?>">
-                                                <?php echo getVideoViews($song["url"]); ?>
-                                            </div>
-                                        </td></tr>
-                                    <?php
-                                }
-                            ?>
-                        </table>
-                    </div>
+        $movies = getResultsForView_Movies();
+        foreach ($movies as $movie) {
+        ?>
+        <div class="row form-group" id="player_div_<?php echo $movie["id"]; ?>" style="margin-right:0px;display:none">
+            <div class="col-md-8">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" id="songs_player_<?php echo $movie["id"]; ?>" width="100%" height="400px" frameborder="0" allowfullscreen></iframe>
                 </div>
+            </div>
+            <div class="col-md-4 custom_scrollbar" style='max-height:400px; overflow-y: scroll;'>
+                <?php
+                    foreach ($movie["songs"] as $song) {
+                        ?>
+                            <div class="row featured_list" onclick="changeSong_Catalogue(<?php echo $movie["id"]; ?>, '<?php echo $song["url"]; ?>');" href="#">
+                                <div class="col-md-4">
+                                    <img src="<?php echo getVideoThumbnail($song["url"]); ?>">
+                                </div>
+                                <div class="col-md-8 lead">
+                                    <?php echo $song["name"]; ?>
+                                </div>
+                            </div>
+                        <?php
+                    }
+                ?>
+            </div>
+        </div>
+        <?php } ?>
+        <div class="row">
             <?php
-        }
+                if(count($movies) < 1)
+                    echo "<h5 class='text-center'>No Content Found!</h5>";
+                else{
+                    $count = 1;
+                    foreach ($movies as $movie) {
+                        ?>
+                        <div class="col-md-4 text-center" style="padding-bottom:50px">
+                            <img class="play" src="<?php echo plugins_url( '/images/play.png' , __FILE__ ); ?>" onclick="play_song_catalogue(<?php echo $movie["id"]; ?>, '<?php echo $movie["songs"][0]["url"]; ?>')">
+                             <?php if($movie["image"] != null && $movie["image"] != ""){ ?>
+                            <img width="200px" height="250px" src="<?php echo "/wp-content/uploads/codistan/" . $movie["image"]; ?>">
+                            <?php } else { ?>
+                                <img width="200px" height="250px" src="http://c.saavncdn.com/001/S-D-Burman-The-Evergreen-Composer-2013-500x500.jpg">
+                            <?php } ?>
+                            </br>
+                            <a href="/detail?content=movie&id=<?php echo $movie["id"]; ?>" style="color:black;">
+                                <h5>
+                                    <?php echo $movie["name"]; ?>
+                                    </br>
+                                    <?php if($movie["id"] != "0") echo "(" . $movie["year"] . ")"; ?>
+                                </h5>
+                            </a>
+                            <div class="border_bottom"></div>
+                            <?php if($movie["id"] != "0") echo "Director: " . $movie["director"]; ?></br>
+                        </div>
+                        <?php
+                        if($count++ % 3 == 0)
+                            echo "</div><div class='row'>";
+                    }
+                }
+            ?>
+
+            </div>
+        <?php
     }
 
     function getResultsForView_Movies(){
@@ -138,7 +151,7 @@
             foreach ($songs as $song) {
                 array_push($all_songs, array("id"=>$song->id, "name"=>$song->name, "type"=>$song->song_type, "language"=>$song->language, "genre"=>$song->genre, "url"=>$song->media_url, "year"=>$song->year));
             }
-            $solo_songs = array("id"=>0, "name"=>"-Solo Songs", "songs"=>$all_songs);
+            $solo_songs = array("id"=>0, "name"=>"Solo Songs", "songs"=>$all_songs);
             array_push($result, $solo_songs);
         }
         return $result;
@@ -146,27 +159,36 @@
 
     function viewBySongs(){
         $songs = getResultsForView_Songs();
-
         ?>
-            <table class="table table-hover table_songs">
-                <?php
-                    $count = 1;
-                    foreach ($songs as $song) {
+            <div class="row">
+        <?php
+            if(count($songs) < 1)
+                echo "<h5 class='text-center'>No Content Found!</h5>";
+            else{
+                $count = 1;
+                foreach ($songs as $song) {
+                    ?>
+                    <div class="col-md-3">
+                        <div class="panel panel-default">
+                            <div class="">
+                                <a href="/detail?content=song&id=<?php echo $song->id ?>"><img src="<?php echo getVideoThumbnail($song->media_url); ?>"></a>
+                            </div>
+                            <div class="panel-footer">
+                                <a href="/detail?content=song&id=<?php echo $song->id ?>" style="color:black"><b><?php echo $song->name; ?></b></a></br>
+                                <a href="/detail?content=movie&id=<?php echo $song->movie ?>" style="color:black">Movie: <?php echo getMovie($song->movie); ?></a></br>
+                                Genre: <?php echo getGenre($song->genre); ?></br>
+                                Year: <?php echo $song->year; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                    if($count++ % 4 == 0)
+                        echo "</div><div class='row'>";
+                }
+            }
+        ?>
 
-                        ?>
-                            <tr><td>
-                                <a href="/detail?content=song&id=<?php echo $song->id ?>" style="color:black" target="_blank">
-                                <?php echo $count++ . ". " . $song->name; ?>
-                                </a>
-                                <div style="float: right;">
-                                    <img width="20px" src="<?php echo plugins_url( '/images/play_count.png' , __FILE__ ); ?>">
-                                    <?php echo getVideoViews($song->media_url); ?>
-                                </div>
-                            </td></tr>
-                        <?php
-                    }
-                ?>
-            </table>
+            </div>
         <?php
     }
 
@@ -184,7 +206,7 @@
             if(isset($_GET["sorting_order"]) && $_GET["sorting_order"] == "desc")
                 $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE status=true" . getFilterQuery() . " ORDER BY name DESC");
             else
-                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE status=true" . getFilterQuery() . " ORDER BY name");
+                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE status=true" . getFilterQuery() . " ORDER BY name ASC");
         }
         return $songs;
     }
