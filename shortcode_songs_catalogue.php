@@ -53,18 +53,18 @@
         foreach ($movies as $movie) {
         ?>
         <div class="row form-group" id="player_div_<?php echo $movie["id"]; ?>" style="margin-right:0px;display:none">
-            <div class="col-md-8">
-                <div class="embed-responsive embed-responsive-16by9">
+            <div class="col-md-8 well" style="padding:0px">
+                <div class="embed-responsive embed-responsive-16by9" style="padding:0px">
                     <iframe class="embed-responsive-item" id="songs_player_<?php echo $movie["id"]; ?>" width="100%" height="400px" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
-            <div class="col-md-4 custom_scrollbar" style='max-height:400px; overflow-y: scroll;'>
+            <div class="col-md-4 custom_scrollbar" style='height:410px; overflow-y: scroll;'>
                 <?php
                     foreach ($movie["songs"] as $song) {
                         ?>
-                            <div class="row featured_list" onclick="changeSong_Catalogue(<?php echo $movie["id"]; ?>, '<?php echo $song["url"]; ?>');" href="#">
+                            <div class="row <?php if($song["url"] == "N/A") {echo "featured_list_disabled";} else {echo "featured_list";} ?>" <?php if($song["url"] != "N/A") { ?> onclick="changeSong_Catalogue(<?php echo $movie["id"]; ?>, '<?php echo $song["url"]; ?>')" <?php } ?> href="#">
                                 <div class="col-md-4">
-                                    <img src="<?php echo getVideoThumbnail($song["url"]); ?>">
+                                    <img src="<?php if($song["url"] == "N/A") {echo "http://c.saavncdn.com/001/S-D-Burman-The-Evergreen-Composer-2013-500x500.jpg";} else {echo getVideoThumbnail($song["url"]);}  ?>">
                                 </div>
                                 <div class="col-md-8 lead">
                                     <?php echo $song["name"]; ?>
@@ -89,7 +89,7 @@
                              <?php if($movie["image"] != null && $movie["image"] != ""){ ?>
                             <img width="200px" height="250px" src="<?php echo "/wp-content/uploads/codistan/" . $movie["image"]; ?>">
                             <?php } else { ?>
-                                <img width="200px" height="250px" src="http://c.saavncdn.com/001/S-D-Burman-The-Evergreen-Composer-2013-500x500.jpg">
+                                <img width="200px" height="250px" src="/wp-content/uploads/codistan/default.jpg">
                             <?php } ?>
                             </br>
                             <a href="/detail?content=movie&id=<?php echo $movie["id"]; ?>" style="color:black;">
@@ -144,14 +144,14 @@
             }
         }
 
-        $number_of_songs = $wpdb->get_var("SELECT COUNT(*) FROM codistan_songs WHERE song_type=1 AND status=true" . getFilterQuery());
+        $number_of_songs = $wpdb->get_var("SELECT COUNT(*) FROM codistan_songs WHERE song_type=7 AND status=true" . getFilterQuery());
         if($number_of_songs > 0){
-            $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE song_type=1 AND status=true" . getFilterQuery());
+            $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE song_type=7 AND status=true" . getFilterQuery());
             $all_songs = array();
             foreach ($songs as $song) {
                 array_push($all_songs, array("id"=>$song->id, "name"=>$song->name, "type"=>$song->song_type, "language"=>$song->language, "genre"=>$song->genre, "url"=>$song->media_url, "year"=>$song->year));
             }
-            $solo_songs = array("id"=>0, "name"=>"Solo Songs", "songs"=>$all_songs);
+            $solo_songs = array("id"=>0, "name"=>"Non-Movie Songs", "songs"=>$all_songs);
             array_push($result, $solo_songs);
         }
         return $result;
@@ -198,15 +198,15 @@
         $songs;
         if(isset($_GET["sorting"]) && $_GET["sorting"] == "year"){
             if(isset($_GET["sorting_order"]) && $_GET["sorting_order"] == "desc")
-                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE status=true" . getFilterQuery() . " ORDER BY year DESC");
+                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE media_url<>'N/A' AND status=true" . getFilterQuery() . " ORDER BY year DESC");
             else
-                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE status=true" . getFilterQuery() . " ORDER BY year");
+                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE media_url<>'N/A' AND status=true" . getFilterQuery() . " ORDER BY year");
         }
         else{
             if(isset($_GET["sorting_order"]) && $_GET["sorting_order"] == "desc")
-                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE status=true" . getFilterQuery() . " ORDER BY name DESC");
+                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE media_url<>'N/A' AND status=true" . getFilterQuery() . " ORDER BY name DESC");
             else
-                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE status=true" . getFilterQuery() . " ORDER BY name ASC");
+                $songs = $wpdb->get_results("SELECT * FROM codistan_songs WHERE media_url<>'N/A' AND status=true" . getFilterQuery() . " ORDER BY name ASC");
         }
         return $songs;
     }

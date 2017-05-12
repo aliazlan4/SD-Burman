@@ -34,6 +34,8 @@ License: GPLv2 or later
 	add_action('wp_ajax_nopriv_changeLanguage', 'changeLanguage');
 	add_action('wp_ajax_changeSortBy', 'changeSortBy');
 	add_action('wp_ajax_nopriv_changeSortBy', 'changeSortBy');
+	add_action('wp_ajax_searchMovie', 'searchMovie');
+	add_action('wp_ajax_nopriv_searchMovie', 'searchMovie');
 
     function codistan_activation() {
 		codistan_install();

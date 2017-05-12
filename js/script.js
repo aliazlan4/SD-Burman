@@ -32,7 +32,8 @@ function play_song_catalogue(id, url){
 		current_player = player;
 	}
 
-	player.src = url;
+	if(url != "N/A")
+		player.src = url;
 	div.style.display = "";
 
 	$('html, body').animate({
@@ -99,3 +100,73 @@ function play_song(url){
 	player.src = url;
 	player.parentNode.style.display = "";
 }
+
+jQuery(document).ready(function($) {
+$( function() {
+    $('#contributions_movie').keyup(function () {
+		var text = $('#contributions_movie').val();
+
+		if(text.length > 2){
+			jQuery.ajax({
+				type: 'POST',
+				url: MyAjax.ajaxurl,
+				data: {"action": "searchMovie", "text":text},
+				success: function(data){
+					if(data == ""){
+						remove_search_results();
+					}
+					else{
+						show_search_results(data);
+					}
+				}
+			});
+		}
+		else{
+			remove_search_results();
+		}
+	});
+  });
+});
+
+function show_search_results(data){
+	remove_search_results();
+
+	jQuery(".results").css("display", "block");
+	var json = JSON.parse(data);
+	var div = document.getElementById("search_results");
+
+	for(var i = 0; i < json.data.length; i++){
+		var temp = document.createElement('li');
+		var temp1 = document.createElement('a');
+        temp1.textContent = json.data[i].title;
+		temp.setAttribute("onclick","redirect_search_result(this, '" + json.data[i].title + "');");
+
+		temp.appendChild(temp1);
+        div.appendChild(temp);
+	}
+
+}
+
+function remove_search_results(){
+ 	jQuery('#search_results').empty();
+	jQuery(".results").css("display", "none");
+}
+
+function redirect_search_result(obj, title){
+	var a = obj.childNodes[0];
+	document.getElementById("contributions_movie").value = a.textContent;
+	jQuery(".results").css("display", "none");
+}
+
+jQuery(document).ready(function($) {
+	$('#contributions_category').on('change', function() {
+		if(this.value == "1" || this.value == "2"){
+	  		document.getElementById("song_form_div").style.display = '';
+	  		document.getElementById("form_submit_row").style.display = '';
+		}
+		else{
+			document.getElementById("song_form_div").style.display = 'none';
+			document.getElementById("form_submit_row").style.display = 'none';
+		}
+	});
+});

@@ -59,4 +59,22 @@
         $_SESSION["sort_by"] = $_POST["sort_by"];
         wp_die();
     }
+
+    function searchMovie(){
+        global $wpdb;
+        $text = $_POST["text"];
+        $json_string = '{"data":[';
+
+        $rowcount = $wpdb->get_var("SELECT COUNT(*) FROM codistan_movies WHERE name LIKE '%".$text."%'");
+        if($rowcount > 0){
+            $result = $wpdb->get_results("SELECT id,name FROM codistan_movies WHERE name LIKE '%".$text."%'");
+            foreach($result as $row){
+                $json_string .= '{"id":'.$row->id.', "title":"'.$row->name.'"},';
+            }
+            $json_string = rtrim($json_string, ",");
+            $json_string .= "]}";
+            die($json_string);
+        }
+        die("nothing");
+    }
 ?>

@@ -28,11 +28,13 @@
                         <p>Language: <?php echo getLanguage($row->language); ?></br>
                         Genre: <?php echo getGenre($row->genre); ?></p>
                         </div></div></br>
+                        <?php if($row->media_url != "N/A"){ ?>
                         <div class='row' style="padding:30px">
                             <div class="text-center embed-responsive embed-responsive-16by9" style="margin:20px;">
                                 <iframe class="embed-responsive-item" id="video_player" src="<?php echo str_replace("watch?v=", "embed/", $row->media_url); ?>" width="80%" height="400px" frameborder="0" allowfullscreen></iframe>
                             </div>
                         </div>
+                        <?php } ?>
                     <?php
                         break;
                     }
@@ -65,7 +67,7 @@
                     ?>
 	 	</div></div></br>
         <div class='row' style="padding:30px">
-            <p style='font-size:24px' class='text-center'><b>AUDIO SONGS</b></p>
+            <p style='font-size:24px' class='text-center'><b>SONGS</b></p>
             <div class="text-center embed-responsive embed-responsive-16by9" style="display:none; margin:20px;">
                 <iframe class="embed-responsive-item" id="video_player" width="80%" height="400px" frameborder="0" allowfullscreen></iframe>
             </div>
