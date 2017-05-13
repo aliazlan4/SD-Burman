@@ -159,14 +159,139 @@ function redirect_search_result(obj, title){
 }
 
 jQuery(document).ready(function($) {
+$( function() {
+    $('#contributions_picture_relatedToId').keyup(function () {
+		var text = $('#contributions_picture_relatedToId').val();
+		var related = $('#contributions_picture_relatedTo').val();
+
+		if(text.length > 2){
+			jQuery.ajax({
+				type: 'POST',
+				url: MyAjax.ajaxurl,
+				data: {"action": "searchForRelatedTo", "text":text, "related":related},
+				success: function(data){
+					if(data == ""){
+						remove_search_results_picture();
+					}
+					else{
+						show_search_results_picture(data);
+					}
+				}
+			});
+		}
+		else{
+			remove_search_results_picture();
+		}
+	});
+  });
+});
+
+function show_search_results_picture(data){
+	remove_search_results_picture();
+
+	jQuery(".results").css("display", "block");
+	var json = JSON.parse(data);
+	var div = document.getElementById("search_results_picture_relatedToId");
+
+	for(var i = 0; i < json.data.length; i++){
+		var temp = document.createElement('li');
+		var temp1 = document.createElement('a');
+        temp1.textContent = json.data[i].title;
+		temp.setAttribute("onclick","redirect_search_result_picture(this, '" + json.data[i].title + "');");
+
+		temp.appendChild(temp1);
+        div.appendChild(temp);
+	}
+
+}
+
+function remove_search_results_picture(){
+ 	jQuery('#search_results_picture_relatedToId').empty();
+	jQuery(".results").css("display", "none");
+}
+
+function redirect_search_result_picture(obj, title){
+	var a = obj.childNodes[0];
+	document.getElementById("contributions_picture_relatedToId").value = a.textContent;
+	jQuery(".results").css("display", "none");
+}
+
+jQuery(document).ready(function($) {
+$( function() {
+    $('#contributions_article_relatedToId').keyup(function () {
+		var text = $('#contributions_article_relatedToId').val();
+		var related = $('#contributions_article_relatedTo').val();
+
+		if(text.length > 2){
+			jQuery.ajax({
+				type: 'POST',
+				url: MyAjax.ajaxurl,
+				data: {"action": "searchForRelatedTo", "text":text, "related":related},
+				success: function(data){
+					if(data == ""){
+						remove_search_results_article();
+					}
+					else{
+						show_search_results_article(data);
+					}
+				}
+			});
+		}
+		else{
+			remove_search_results_article();
+		}
+	});
+  });
+});
+
+function show_search_results_article(data){
+	remove_search_results_article();
+
+	jQuery(".results").css("display", "block");
+	var json = JSON.parse(data);
+	var div = document.getElementById("search_results_article_relatedToId");
+
+	for(var i = 0; i < json.data.length; i++){
+		var temp = document.createElement('li');
+		var temp1 = document.createElement('a');
+        temp1.textContent = json.data[i].title;
+		temp.setAttribute("onclick","redirect_search_result_article(this, '" + json.data[i].title + "');");
+
+		temp.appendChild(temp1);
+        div.appendChild(temp);
+	}
+
+}
+
+function remove_search_results_article(){
+ 	jQuery('#search_results_article_relatedToId').empty();
+	jQuery(".results").css("display", "none");
+}
+
+function redirect_search_result_article(obj, title){
+	var a = obj.childNodes[0];
+	document.getElementById("contributions_article_relatedToId").value = a.textContent;
+	jQuery(".results").css("display", "none");
+}
+
+jQuery(document).ready(function($) {
 	$('#contributions_category').on('change', function() {
+		document.getElementById("song_form_div").style.display = 'none';
+		document.getElementById("picture_form_div").style.display = 'none';
+		document.getElementById("article_form_div").style.display = 'none';
+		document.getElementById("form_submit_row").style.display = 'none';
+
 		if(this.value == "1" || this.value == "2"){
 	  		document.getElementById("song_form_div").style.display = '';
 	  		document.getElementById("form_submit_row").style.display = '';
 		}
-		else{
-			document.getElementById("song_form_div").style.display = 'none';
-			document.getElementById("form_submit_row").style.display = 'none';
+		else if(this.value == "3"){
+			document.getElementById("picture_form_div").style.display = '';
+	  		document.getElementById("form_submit_row").style.display = '';
+		}
+		else if(this.value == "5"){
+			document.getElementById("article_form_div").style.display = '';
+			document.getElementById("form_submit_row").style.display = '';
 		}
 	});
 });

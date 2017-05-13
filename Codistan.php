@@ -36,6 +36,8 @@ License: GPLv2 or later
 	add_action('wp_ajax_nopriv_changeSortBy', 'changeSortBy');
 	add_action('wp_ajax_searchMovie', 'searchMovie');
 	add_action('wp_ajax_nopriv_searchMovie', 'searchMovie');
+	add_action('wp_ajax_searchForRelatedTo', 'searchForRelatedTo');
+	add_action('wp_ajax_nopriv_searchForRelatedTo', 'searchForRelatedTo');
 
     function codistan_activation() {
 		codistan_install();
@@ -70,6 +72,7 @@ License: GPLv2 or later
             featured BOOLEAN DEFAULT false,
 			year TEXT DEFAULT '',
             status BOOLEAN DEFAULT false,
+			user mediumint(9),
 			time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			UNIQUE KEY id (id),
 			UNIQUE INDEX `id_UNIQUE` (`id` ASC)
@@ -98,6 +101,7 @@ License: GPLv2 or later
             media_url TEXT DEFAULT '',
             year TEXT DEFAULT '',
 			status BOOLEAN DEFAULT false,
+			user mediumint(9),
 			time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			UNIQUE KEY id (id),
 			UNIQUE INDEX `id_UNIQUE` (`id` ASC)
@@ -135,6 +139,32 @@ License: GPLv2 or later
 			UNIQUE INDEX `id_UNIQUE` (`id` ASC)
 		) $charset_collate;";
 
+		$sql8 = "CREATE TABLE codistan_events (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			name TEXT NOT NULL DEFAULT '',
+            location TEXT DEFAULT '',
+            year TEXT DEFAULT '',
+			time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			UNIQUE KEY id (id),
+			UNIQUE INDEX `id_UNIQUE` (`id` ASC)
+		) $charset_collate;";
+
+		$sql9 = "CREATE TABLE codistan_articles (
+			id mediumint(9) NOT NULL AUTO_INCREMENT,
+			name TEXT NOT NULL DEFAULT '',
+			relatedTo mediumint(9),
+            relatedTo_id mediumint(9),
+			content TEXT DEFAULT '',
+			image TEXT DEFAULT '',
+			video_url TEXT DEFAULT '',
+			author TEXT DEFAULT '',
+            year TEXT DEFAULT '',
+			user mediumint(9),
+			time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+			UNIQUE KEY id (id),
+			UNIQUE INDEX `id_UNIQUE` (`id` ASC)
+		) $charset_collate;";
+
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $sql1 );
 		dbDelta( $sql2 );
@@ -143,6 +173,10 @@ License: GPLv2 or later
         dbDelta( $sql5 );
         dbDelta( $sql6 );
         dbDelta( $sql7 );
+        dbDelta( $sql8 );
+        dbDelta( $sql9 );
+
+		mkdir("../wp-content/uploads");
 	}
 
     add_action( 'admin_menu', 'codistan_menu' );
