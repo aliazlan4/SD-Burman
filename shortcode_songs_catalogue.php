@@ -215,29 +215,132 @@
         global $wpdb;
         ?>
             <b>FILTER RESULT</b>
-            <form>
-                <div class='form-group'>
-                    <label for='filter_language' class='control-label'>Language</label>
-                    <select class='form-control' id='filter_language' name='filter_language'>
-                        <option value="0" >All</option>
-                        <?php
-                            $types = $wpdb->get_results("SELECT * FROM codistan_song_languages");
-                            foreach ($types as $type) {
-                                if($_SESSION["filter_language"] == $type->id)
-                                    echo "<option value='".$type->id."' selected='selected'>".$type->name."</option>";
-                                else
-                                    echo "<option value='".$type->id."'>".$type->name."</option>";
-                            }
-                        ?>
-                    </select>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Languages
                 </div>
-            </form>
+                <div class="panel-body">
+                    <div class='form-group'>
+                        <label>
+                            <input type="checkbox" onclick="changeFilter('filter_language_hindi')" <?php if($_SESSION["filter_language_hindi"]) echo "checked"; ?>> Hindi
+                        </label>
+                    </div>
+                    <div class='form-group'>
+                        <label>
+                            <input type="checkbox" onclick="changeFilter('filter_language_bengali')" <?php if($_SESSION["filter_language_bengali"]) echo "checked"; ?>> Bengali
+                        </label>
+                    </div>
+                    <div class='form-group'>
+                        <label>
+                            <input type="checkbox" onclick="changeFilter('filter_language_other')" <?php if($_SESSION["filter_language_other"]) echo "checked"; ?>> Other
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Genres
+                </div>
+                <div class="panel-body">
+                    <div class='form-group'>
+                        <label>
+                            <input type="checkbox" onclick="changeFilter('filter_genre_drama')"<?php if($_SESSION["filter_genre_drama"]) echo "checked"; ?>> Drama
+                        </label>
+                    </div>
+                    <div class='form-group'>
+                        <label>
+                            <input type="checkbox" onclick="changeFilter('filter_genre_motherhood')" <?php if($_SESSION["filter_genre_motherhood"]) echo "checked"; ?>> Motherhood
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Director
+                </div>
+                <div class="panel-body">
+                    <div class='form-group'>
+                        <select class='form-control' id='filter_director'>
+                            <option value="0">All</option>
+                            <?php
+                                $directors = $wpdb->get_results("SELECT director FROM codistan_songs GROUP BY director");
+                                foreach ($directors as $director) {
+                                    if($_SESSION["filter_director"] == $director->director)
+                                        echo "<option value='".$director->director."' selected='selected'>".$director->director."</option>";
+                                    else
+                                        echo "<option value='".$director->director."'>".$director->director."</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Singer
+                </div>
+                <div class="panel-body">
+                    <div class='form-group'>
+                        <select class='form-control' id='filter_singer'>
+                            <option value="0">All</option>
+                            <?php
+                                $singers = $wpdb->get_results("SELECT singers FROM codistan_songs WHERE singers <> '' GROUP BY singers");
+                                foreach ($singers as $singer) {
+                                    if($_SESSION["filter_singer"] == $singer->singers)
+                                        echo "<option value='".$singer->singers."' selected='selected'>".$singer->singers."</option>";
+                                    else
+                                        echo "<option value='".$singer->singers."'>".$singer->singers."</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
         <?php
     }
 
     function getFilterQuery(){
-        if($_SESSION["filter_language"] != 0)
-            return " AND language=" . $_SESSION["filter_language"];
-        return "";
+        $language = "";
+        $genre = "";
+        $director = "";
+        $singer = "";
+
+        if($_SESSION["filter_language_hindi"]){
+            $language = "language = 1";
+        }
+        if($_SESSION["filter_language_bengali"]){
+            if($language == "")
+                $language = "language = 2";
+            else
+                $language = $language . " OR language = 2";
+        }
+        if($_SESSION["filter_language_other"]){
+            if($language == "")
+                $language = "language = 3";
+            else
+                $language = $language . " OR language = 3";
+        }
+        if($language != "")
+            $language = " AND (" . $language . ")";
+
+        if($_SESSION["filter_genre_drama"]){
+            $genre = "genre = 1";
+        }
+        if($_SESSION["filter_genre_motherhood"]){
+            if($genre == "")
+                $genre = "genre = 2";
+            else
+                $genre = $genre . " OR genre = 2";
+        }
+        if($genre != "")
+            $genre = " AND (" . $genre . ")";
+
+        if($_SESSION["filter_director"] != "0")
+            $director = " AND (director = '" . $_SESSION["filter_director"] . "')";
+
+        if($_SESSION["filter_singer"] != "0")
+            $singer = " AND (singers = '" . $_SESSION["filter_singer"] . "')";
+
+        return $language . $genre . $director . $singer;
     }
 ?>

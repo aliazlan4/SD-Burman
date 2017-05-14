@@ -57,13 +57,38 @@ function change_sorting(sorting, sorting_order){
 	window.location = result;
 }
 
+function changeFilter(input){
+	jQuery.ajax({
+		type: 'POST',
+		url: MyAjax.ajaxurl,
+		data: {"action": "changeFilter", "input":input},
+		success: function(data){
+	    	location.reload();
+		}
+	});
+}
+
 jQuery(document).ready(function($) {
-	$('#filter_language').on('change', function() {
+	$('#filter_director').on('change', function() {
 	  	var option = this.value;
 		jQuery.ajax({
 			type: 'POST',
 			url: MyAjax.ajaxurl,
-			data: {"action": "changeLanguage", "filter_language":option},
+			data: {"action": "changeDirector", "input":option},
+			success: function(data){
+		    	location.reload();
+			}
+		});
+	})
+});
+
+jQuery(document).ready(function($) {
+	$('#filter_singer').on('change', function() {
+	  	var option = this.value;
+		jQuery.ajax({
+			type: 'POST',
+			url: MyAjax.ajaxurl,
+			data: {"action": "changeSinger", "input":option},
 			success: function(data){
 		    	location.reload();
 			}

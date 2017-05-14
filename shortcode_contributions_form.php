@@ -248,7 +248,10 @@
     function submitImage(){
         global $wpdb;
 
-        $result = upload_image($_FILES["contributions_picture_pic"]);
+        $result = null;
+        if (is_uploaded_file($_FILES["contributions_picture_pic"]['tmp_name']))
+            $result = upload_image($_FILES["contributions_picture_pic"]);
+
         $relatedTo_id;
 
         if($_POST['contributions_picture_relatedTo'] == '2'){
@@ -276,7 +279,10 @@
     function submitArticle(){
         global $wpdb;
 
-        $result = upload_image($_FILES["contributions_article_pic"]);
+        $result = null;
+        if (is_uploaded_file($_FILES["contributions_article_pic"]['tmp_name']))
+            $result = upload_image($_FILES["contributions_article_pic"]);
+
         $relatedTo_id;
         if($_POST['contributions_article_relatedTo'] == '2'){
             $relatedTo_id = $wpdb->get_var("SELECT id FROM codistan_songs WHERE name = '".$_POST["contributions_article_relatedToId"]."'");

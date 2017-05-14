@@ -13,10 +13,19 @@ License: GPLv2 or later
 		if( !session_id() ){
 	  		session_start();
 		}
-		if(!isset($_SESSION["filter_language"]))
-			$_SESSION["filter_language"] = 0;
+
 		if(!isset($_SESSION["sort_by"]))
 				$_SESSION["sort_by"] = "movie";
+
+		if(!isset($_SESSION["filter_language_hindi"])){
+			$_SESSION["filter_language_hindi"] = true;
+			$_SESSION["filter_language_bengali"] = true;
+			$_SESSION["filter_language_other"] = true;
+			$_SESSION["filter_genre_drama"] = true;
+			$_SESSION["filter_genre_motherhood"] = true;
+			$_SESSION["filter_director"] = "0";
+			$_SESSION["filter_singer"] = "0";
+		}
 	}
 	add_action('init', 'register_my_session');
 
@@ -30,8 +39,12 @@ License: GPLv2 or later
 	wp_enqueue_script('codistan1', plugins_url( '/js/jquery-ui.js' , __FILE__ ) , array( 'jquery' ));
 	wp_enqueue_style( 'codistan_style', plugins_url( '/style/style.css' , __FILE__ ) );
 
-	add_action('wp_ajax_changeLanguage', 'changeLanguage');
-	add_action('wp_ajax_nopriv_changeLanguage', 'changeLanguage');
+	add_action('wp_ajax_changeFilter', 'changeFilter');
+	add_action('wp_ajax_nopriv_changeFilter', 'changeFilter');
+	add_action('wp_ajax_changeDirector', 'changeDirector');
+	add_action('wp_ajax_nopriv_changeDirector', 'changeDirector');
+	add_action('wp_ajax_changeSinger', 'changeSinger');
+	add_action('wp_ajax_nopriv_changeSinger', 'changeSinger');
 	add_action('wp_ajax_changeSortBy', 'changeSortBy');
 	add_action('wp_ajax_nopriv_changeSortBy', 'changeSortBy');
 	add_action('wp_ajax_searchMovie', 'searchMovie');

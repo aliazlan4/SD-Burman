@@ -50,8 +50,21 @@
         return "";
     }
 
-    function changeLanguage(){
-        $_SESSION["filter_language"] = $_POST["filter_language"];
+    function changeFilter(){
+        if($_SESSION[$_POST["input"]])
+            $_SESSION[$_POST["input"]] = false;
+        else
+            $_SESSION[$_POST["input"]] = true;
+        wp_die();
+    }
+
+    function changeDirector(){
+        $_SESSION["filter_director"] = $_POST["input"];
+        wp_die();
+    }
+
+    function changeSinger(){
+        $_SESSION["filter_singer"] = $_POST["input"];
         wp_die();
     }
 
