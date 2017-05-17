@@ -38,6 +38,7 @@ License: GPLv2 or later
 	wp_register_script( 'codistan', plugins_url( '/js/script.js' , __FILE__ ), array('jquery') );
 	wp_enqueue_script('codistan1', plugins_url( '/js/jquery-ui.js' , __FILE__ ) , array( 'jquery' ));
 	wp_enqueue_style( 'codistan_style', plugins_url( '/style/style.css' , __FILE__ ) );
+	wp_enqueue_style( 'codistan_bootstrap_style', plugins_url( '/style/bootstrap.min.css' , __FILE__ ) );
 
 	add_action('wp_ajax_changeFilter', 'changeFilter');
 	add_action('wp_ajax_nopriv_changeFilter', 'changeFilter');
@@ -51,6 +52,12 @@ License: GPLv2 or later
 	add_action('wp_ajax_nopriv_searchMovie', 'searchMovie');
 	add_action('wp_ajax_searchForRelatedTo', 'searchForRelatedTo');
 	add_action('wp_ajax_nopriv_searchForRelatedTo', 'searchForRelatedTo');
+	add_action('wp_ajax_deleteSong', 'deleteSong');
+	add_action('wp_ajax_deleteImage', 'deleteImage');
+	add_action('wp_ajax_deleteArticle', 'deleteArticle');
+	add_action('wp_ajax_approveSong', 'approveSong');
+	add_action('wp_ajax_approveImage', 'approveImage');
+	add_action('wp_ajax_approveArticle', 'approveArticle');
 
     function codistan_activation() {
 		codistan_install();
@@ -173,6 +180,7 @@ License: GPLv2 or later
 			author TEXT DEFAULT '',
             year TEXT DEFAULT '',
 			user mediumint(9),
+			status BOOLEAN DEFAULT false,
 			time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 			UNIQUE KEY id (id),
 			UNIQUE INDEX `id_UNIQUE` (`id` ASC)

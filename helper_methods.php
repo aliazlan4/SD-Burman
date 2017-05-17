@@ -40,10 +40,50 @@
         return "";
     }
 
+    function getSongType($id){
+        global $wpdb;
+
+        $temp = $wpdb->get_results("SELECT * FROM codistan_song_types WHERE id=".$id);
+        foreach ($temp as $temp1) {
+            return $temp1->name;
+        }
+        return "";
+    }
+
+    function getSong($id){
+        global $wpdb;
+
+        $temp = $wpdb->get_results("SELECT * FROM codistan_songs WHERE id=".$id);
+        foreach ($temp as $temp1) {
+            return $temp1->name;
+        }
+        return "";
+    }
+
     function getMovie($id){
         global $wpdb;
 
         $temp = $wpdb->get_results("SELECT * FROM codistan_movies WHERE id=".$id);
+        foreach ($temp as $temp1) {
+            return $temp1->name;
+        }
+        return "";
+    }
+
+    function getArticle($id){
+        global $wpdb;
+
+        $temp = $wpdb->get_results("SELECT * FROM codistan_articles WHERE id=".$id);
+        foreach ($temp as $temp1) {
+            return $temp1->name;
+        }
+        return "";
+    }
+
+    function getEvent($id){
+        global $wpdb;
+
+        $temp = $wpdb->get_results("SELECT * FROM codistan_events WHERE id=".$id);
         foreach ($temp as $temp1) {
             return $temp1->name;
         }
@@ -190,5 +230,56 @@
 		}
 
 		return ["error" => $error, "message" => $message, "image_path" => $target_file];
+	}
+
+    function deleteSong(){
+		global $wpdb;
+		$id = $_POST['id'];
+
+		$wpdb->delete( 'codistan_songs', array( 'id' => $id) );
+
+		die();
+	}
+
+	function approveSong(){
+		global $wpdb;
+		$id = $_POST['id'];
+		$wpdb->update( 'codistan_songs', array( 'status' => true), array( 'id' => $id) );
+
+		die();
+	}
+
+    function deleteImage(){
+		global $wpdb;
+		$id = $_POST['id'];
+
+		$wpdb->delete( 'codistan_images', array( 'id' => $id) );
+
+		die();
+	}
+
+	function approveImage(){
+		global $wpdb;
+		$id = $_POST['id'];
+		$wpdb->update( 'codistan_images', array( 'status' => true), array( 'id' => $id) );
+
+		die();
+	}
+
+    function deleteArticle(){
+		global $wpdb;
+		$id = $_POST['id'];
+
+		$wpdb->delete( 'codistan_articles', array( 'id' => $id) );
+
+		die();
+	}
+
+	function approveArticle(){
+		global $wpdb;
+		$id = $_POST['id'];
+		$wpdb->update( 'codistan_articles', array( 'status' => true), array( 'id' => $id) );
+
+		die();
 	}
 ?>

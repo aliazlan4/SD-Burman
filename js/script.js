@@ -320,3 +320,87 @@ jQuery(document).ready(function($) {
 		}
 	});
 });
+
+function deleteSong(id, r){
+	if (confirm('Are you sure you want to delete this song?')) {
+		jQuery.ajax({
+			type: 'POST',
+			url: MyAjax.ajaxurl,
+			data: {"action": "deleteSong", "id":id},
+			success: function(data){
+	           alert("Deleted Successfully!");
+			}
+		});
+		var i = r.parentNode.parentNode.rowIndex;
+	    document.getElementById("songs_table").deleteRow(i);
+	}
+};
+
+function approveSong(id, r){
+   	jQuery.ajax({
+		type: 'POST',
+		url: MyAjax.ajaxurl,
+		data: {"action": "approveSong", "id":id},
+		success: function(data){
+           alert("Approved Successfully!");
+		}
+	});
+	var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("songs_table").deleteRow(i);
+};
+
+function deleteImage(id, r){
+	if (confirm('Are you sure you want to delete this Image?')) {
+		jQuery.ajax({
+			type: 'POST',
+			url: MyAjax.ajaxurl,
+			data: {"action": "deleteImage", "id":id},
+			success: function(data){
+	           alert("Deleted Successfully!");
+			}
+		});
+		var i = r.parentNode.parentNode.rowIndex;
+	    document.getElementById("images_table").deleteRow(i);
+	}
+};
+
+function approveImage(id, r){
+   	jQuery.ajax({
+		type: 'POST',
+		url: MyAjax.ajaxurl,
+		data: {"action": "approveImage", "id":id},
+		success: function(data){
+           alert("Approved Successfully!");
+		}
+	});
+	var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("images_table").deleteRow(i);
+};
+
+function deleteArticle(id, r){
+	if (confirm('Are you sure you want to delete this Article?')) {
+		jQuery.ajax({
+			type: 'POST',
+			url: MyAjax.ajaxurl,
+			data: {"action": "deleteArticle", "id":id},
+			success: function(data){
+	           alert("Deleted Successfully!");
+			}
+		});
+		var i = r.parentNode.parentNode.rowIndex;
+	    document.getElementById("articles_table").deleteRow(i);
+	}
+};
+
+function approveArticle(id, r){
+   	jQuery.ajax({
+		type: 'POST',
+		url: MyAjax.ajaxurl,
+		data: {"action": "approveArticle", "id":id},
+		success: function(data){
+           alert("Approved Successfully!");
+		}
+	});
+	var i = r.parentNode.parentNode.rowIndex;
+    document.getElementById("articles_table").deleteRow(i);
+};
