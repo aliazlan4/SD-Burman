@@ -11,8 +11,8 @@
         ?>
             <div class="row form-group" style="margin-right:0px">
                 <div class="col-md-8">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" id="featured_songs_player" width="100%" height="500px" src="<?php echo $first_song ?>" frameborder="0" allowfullscreen></iframe>
+                    <div class="embed-responsive embed-responsive-16by9" style="height:500px">
+                        <iframe class="embed-responsive-item" id="featured_songs_player" src="<?php echo $first_song ?>" frameborder="0" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="col-md-4 custom_scrollbar" style='max-height:500px; overflow-y: scroll;'>

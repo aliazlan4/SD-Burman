@@ -54,11 +54,11 @@
         ?>
         <div class="row form-group" id="player_div_<?php echo $movie["id"]; ?>" style="margin-right:0px;display:none">
             <div class="col-md-8 well" style="padding:0px">
-                <div class="embed-responsive embed-responsive-16by9" style="padding:0px">
-                    <iframe class="embed-responsive-item" id="songs_player_<?php echo $movie["id"]; ?>" width="100%" height="400px" frameborder="0" allowfullscreen></iframe>
+                <div class="embed-responsive embed-responsive-16by9" style="padding:0px; height:400px">
+                    <iframe class="embed-responsive-item" id="songs_player_<?php echo $movie["id"]; ?>" width="100%" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
-            <div class="col-md-4 custom_scrollbar" style='height:410px; overflow-y: scroll;'>
+            <div class="col-md-4 custom_scrollbar" style='height:400px; overflow-y: scroll;'>
                 <?php
                     foreach ($movie["songs"] as $song) {
                         ?>
