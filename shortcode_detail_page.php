@@ -36,8 +36,11 @@
                                 <iframe class="embed-responsive-item" id="video_player" src="<?php echo str_replace("watch?v=", "embed/", $row->media_url); ?>" width="80%" height="400px" frameborder="0" allowfullscreen></iframe>
                             </div>
                         </div>
-                        <?php }
+                        <?php } ?>
 
+                        <?php
+                            $count = $wpdb->get_var( "SELECT count(*) FROM codistan_images WHERE status=true AND (relatedTo=1 OR relatedTo=2) AND relatedTo_id=". $id);
+                            if($count > 0){
                         ?>
                         <div class='row' style="padding:30px">
                             <p style='font-size:24px' class='text-center'><b>IMAGES</b></p>
@@ -57,6 +60,12 @@
                             ?>
                             </div>
                         </div>
+                        <?php } ?>
+
+                        <?php
+                            $count = $wpdb->get_var( "SELECT count(*) FROM codistan_articles WHERE status=true AND (relatedTo=1 OR relatedTo=2) AND relatedTo_id=". $id);
+                            if($count > 0){
+                        ?>
                         <div class='row' style="padding:30px">
                             <p style='font-size:24px' class='text-center'><b>ARTICLES</b></p>
                             <div class='row'>
@@ -79,6 +88,8 @@
                             ?>
                             </div>
                         </div>
+                        <?php } ?>
+
                         <?php
                         break;
                     }
@@ -113,6 +124,10 @@
                     }
                     ?>
 	 	</div></div></br>
+        <?php
+            $count = $wpdb->get_var( "SELECT count(*) FROM codistan_songs WHERE status=true AND movie=". $id);
+            if($count > 0){
+        ?>
         <div class='row' style="padding:30px">
             <p style='font-size:24px' class='text-center'><b>SONGS</b></p>
             <div class="text-center embed-responsive embed-responsive-16by9" style="display:none; margin:20px;">
@@ -138,6 +153,12 @@
                 ?>
             </table>
         </div>
+        <?php } ?>
+
+        <?php
+            $count = $wpdb->get_var( "SELECT count(*) FROM codistan_images WHERE status=true AND relatedTo=4 AND relatedTo_id=". $id);
+            if($count > 0){
+        ?>
         <div class='row' style="padding:30px">
             <p style='font-size:24px' class='text-center'><b>IMAGES</b></p>
             <div class='row'>
@@ -156,7 +177,12 @@
             ?>
             </div>
         </div>
+        <?php } ?>
 
+        <?php
+            $count = $wpdb->get_var( "SELECT count(*) FROM codistan_articles WHERE status=true AND relatedTo=4 AND relatedTo_id=". $id);
+            if($count > 0){
+        ?>
         <div class='row' style="padding:30px">
             <p style='font-size:24px' class='text-center'><b>ARTICLES</b></p>
             <div class='row'>
@@ -179,6 +205,8 @@
             ?>
             </div>
         </div>
+        <?php } ?>
+
         <?php
     }
 
@@ -213,6 +241,10 @@
                     ?>
 	 	</div></div></br>
 
+        <?php
+            $count = $wpdb->get_var( "SELECT count(*) FROM codistan_images WHERE status=true AND relatedTo=5 AND relatedTo_id=". $id);
+            if($count > 0){
+        ?>
         <div class='row' style="padding:30px">
             <p style='font-size:24px' class='text-center'><b>IMAGES</b></p>
             <div class='row'>
@@ -231,6 +263,7 @@
             ?>
             </div>
         </div>
+        <?php } ?>
 
         <?php
     }

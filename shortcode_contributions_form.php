@@ -28,14 +28,14 @@
                     <div class='form-group'>
                         <label for='contributions_song_name' class='col-sm-4 control-label'>Song Name</label>
                         <div class='search col-sm-8'>
-                            <input class='form-control' type='text' id='contributions_song_name' name='contributions_song_name'>
+                            <input class='form-control' type='text' id='contributions_song_name' name='contributions_song_name' onfocus="remove_search_results()">
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_song_type' class='col-sm-4 control-label'>Song's Type</label>
                         <div class='search col-sm-8'>
-                            <select class='form-control' id='contributions_song_type' name='contributions_song_type'>
+                            <select class='form-control' id='contributions_song_type' name='contributions_song_type' onfocus="remove_search_results()">
                                 <?php
                                     $types = $wpdb->get_results("SELECT * FROM codistan_song_types");
                                     foreach ($types as $type) {
@@ -57,21 +57,21 @@
                     <div class='form-group'>
                         <label for='contributions_song_lyricist' class='col-sm-4 control-label'>Song's Lyricist</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='text' id='contributions_song_lyricist' name='contributions_song_lyricist'>
+                                <input class='form-control' type='text' id='contributions_song_lyricist' name='contributions_song_lyricist' onfocus="remove_search_results()">
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_song_singer' class='col-sm-4 control-label'>Song's Singer</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='text' id='contributions_song_singer' name='contributions_song_singer'>
+                                <input class='form-control' type='text' id='contributions_song_singer' name='contributions_song_singer' onfocus="remove_search_results()">
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_song_language' class='col-sm-4 control-label'>Song's Language</label>
                         <div class='search col-sm-8'>
-                            <select class='form-control' id='contributions_song_language' name='contributions_song_language'>
+                            <select class='form-control' id='contributions_song_language' name='contributions_song_language' onfocus="remove_search_results()">
                                 <?php
                                     $types = $wpdb->get_results("SELECT * FROM codistan_song_languages");
                                     foreach ($types as $type) {
@@ -85,7 +85,7 @@
                     <div class='form-group'>
                         <label for='contributions_song_genre' class='col-sm-4 control-label'>Song's Genre</label>
                         <div class='search col-sm-8'>
-                            <select class='form-control' id='contributions_song_genre' name='contributions_song_genre'>
+                            <select class='form-control' id='contributions_song_genre' name='contributions_song_genre' onfocus="remove_search_results()">
                                 <?php
                                     $types = $wpdb->get_results("SELECT * FROM codistan_song_genres");
                                     foreach ($types as $type) {
@@ -99,14 +99,14 @@
                     <div class='form-group'>
                         <label for='contributions_song_url' class='col-sm-4 control-label'>Song's Youtube link</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='text' id='contributions_song_url' name='contributions_song_url'>
+                                <input class='form-control' type='text' id='contributions_song_url' name='contributions_song_url' onfocus="remove_search_results()">
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_song_year' class='col-sm-4 control-label'>Song's Year</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='text' id='contributions_song_year' name='contributions_song_year'>
+                                <input class='form-control' type='text' id='contributions_song_year' name='contributions_song_year' onfocus="remove_search_results()">
                         </div>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                     <div class='form-group'>
                         <label for='contributions_picture_relatedTo' class='col-sm-4 control-label'>Related To</label>
                         <div class='search col-sm-8'>
-                            <select class='form-control' id='contributions_picture_relatedTo' name='contributions_picture_relatedTo'>
+                            <select class='form-control' id='contributions_picture_relatedTo' name='contributions_picture_relatedTo' onfocus="remove_search_results_picture()">
                                 <option value='2'>Song</option>
                                 <option value='4'>Movie</option>
                                 <option value='5'>Article</option>
@@ -134,21 +134,21 @@
                     <div class='form-group'>
                         <label for='contributions_picture_name' class='col-sm-4 control-label'>Caption</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='text' id='contributions_picture_name' name='contributions_picture_name'>
+                                <input class='form-control' type='text' id='contributions_picture_name' name='contributions_picture_name' onfocus="remove_search_results_picture()">
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_picture_pic' class='col-sm-4 control-label'>Image</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='file' id='contributions_picture_pic' name='contributions_picture_pic' accept='image/png,image/jpeg'>
+                                <input class='form-control' type='file' id='contributions_picture_pic' name='contributions_picture_pic' accept='image/png,image/jpeg' onfocus="remove_search_results_picture()">
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_picture_year' class='col-sm-4 control-label'>Year</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='text' id='contributions_picture_year' name='contributions_picture_year'>
+                                <input class='form-control' type='text' id='contributions_picture_year' name='contributions_picture_year' onfocus="remove_search_results_picture()">
                         </div>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
                     <div class='form-group'>
                         <label for='contributions_article_relatedTo' class='col-sm-4 control-label'>Related To</label>
                         <div class='search col-sm-8'>
-                            <select class='form-control' id='contributions_article_relatedTo' name='contributions_article_relatedTo'>
+                            <select class='form-control' id='contributions_article_relatedTo' name='contributions_article_relatedTo' onfocus="remove_search_results_article()">
                                 <option value='2'>Song</option>
                                 <option value='4'>Movie</option>
                                 <option value='6'>Event</option>
@@ -175,42 +175,42 @@
                     <div class='form-group'>
                         <label for='contributions_article_name' class='col-sm-4 control-label'>Heading</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='text' id='contributions_article_name' name='contributions_article_name'>
+                                <input class='form-control' type='text' id='contributions_article_name' name='contributions_article_name' onfocus="remove_search_results_article()">
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_article_content' class='col-sm-4 control-label'>Content</label>
                         <div class='search col-sm-8'>
-                            <textarea class="form-control" rows="4" id='contributions_article_content' name='contributions_article_content'></textarea>
+                            <textarea class="form-control" rows="4" id='contributions_article_content' name='contributions_article_content' onfocus="remove_search_results_article()"></textarea>
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_article_pic' class='col-sm-4 control-label'>Image</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='file' id='contributions_article_pic' name='contributions_article_pic' accept='image/png,image/jpeg'>
+                                <input class='form-control' type='file' id='contributions_article_pic' name='contributions_article_pic' accept='image/png,image/jpeg' onfocus="remove_search_results_article()">
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_article_url' class='col-sm-4 control-label'>Video Youtube link</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='text' id='contributions_article_url' name='contributions_article_url'>
+                                <input class='form-control' type='text' id='contributions_article_url' name='contributions_article_url' onfocus="remove_search_results_article()">
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_article_author' class='col-sm-4 control-label'>Author</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='text' id='contributions_article_author' name='contributions_article_author'>
+                                <input class='form-control' type='text' id='contributions_article_author' name='contributions_article_author' onfocus="remove_search_results_article()">
                         </div>
                     </div>
 
                     <div class='form-group'>
                         <label for='contributions_article_year' class='col-sm-4 control-label'>Year</label>
                         <div class='search col-sm-8'>
-                                <input class='form-control' type='text' id='contributions_article_year' name='contributions_article_year'>
+                                <input class='form-control' type='text' id='contributions_article_year' name='contributions_article_year' onfocus="remove_search_results_article()">
                         </div>
                     </div>
                 </div>

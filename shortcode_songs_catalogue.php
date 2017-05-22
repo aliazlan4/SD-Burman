@@ -92,13 +92,17 @@
                                 <img width="200px" height="250px" src="/wp-content/uploads/codistan/default.jpg">
                             <?php } ?>
                             </br>
+                            <?php if($movie["id"] != "0") { ?>
                             <a href="/detail?content=movie&id=<?php echo $movie["id"]; ?>" style="color:black;">
+                            <?php } ?>
                                 <h5>
                                     <?php echo $movie["name"]; ?>
                                     </br>
                                     <?php if($movie["id"] != "0") echo "(" . $movie["year"] . ")"; ?>
                                 </h5>
+                            <?php if($movie["id"] != "0") { ?>
                             </a>
+                            <?php } ?>
                             <div class="border_bottom"></div>
                             <?php if($movie["id"] != "0") echo "Director: " . $movie["director"]; ?></br>
                         </div>

@@ -306,6 +306,7 @@ jQuery(document).ready(function($) {
 		document.getElementById("article_form_div").style.display = 'none';
 		document.getElementById("form_submit_row").style.display = 'none';
 
+		document.getElementById("contributions_song_name").required = false;
 		document.getElementById("contributions_song_url").required = false;
 		document.getElementById("contributions_picture_relatedToId").required = false;
 		document.getElementById("contributions_picture_pic").required = false;
@@ -317,6 +318,7 @@ jQuery(document).ready(function($) {
 	  		document.getElementById("song_form_div").style.display = '';
 	  		document.getElementById("form_submit_row").style.display = '';
 
+			document.getElementById("contributions_song_name").required = true;
 			document.getElementById("contributions_song_url").required = true;
 		}
 		else if(this.value == "3"){
