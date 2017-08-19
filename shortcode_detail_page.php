@@ -26,6 +26,15 @@
                 ?>
 
                         <img src='http://c.saavncdn.com/001/S-D-Burman-The-Evergreen-Composer-2013-500x500.jpg' width='160px' height='160px' style='max-width:160px; float: left; margin: 0px 20px 0px 0px;'>
+
+                        <a href="/contributions"><button style="float:right;margin:5px" class="btn btn-default">Contribute</button></a>
+                        <?php
+                            $imgs = $wpdb->get_var( "SELECT count(*) FROM codistan_images WHERE status=true AND (relatedTo=1 OR relatedTo=2) AND relatedTo_id=". $id);
+                            $arts = $wpdb->get_var( "SELECT count(*) FROM codistan_articles WHERE status=true AND (relatedTo=1 OR relatedTo=2) AND relatedTo_id=". $id);
+                        ?>
+                        <a href="#images_div"><button style="float:right;margin:5px" class="btn btn-default" <?php if($imgs < 1) echo "disabled"; ?>>Images</button></a>
+                        <a href="#articles_div"><button style="float:right;margin:5px" class="btn btn-default"<?php if($arts < 1) echo "disabled"; ?>>Articles</button></a>
+
                         <h3><b><?php echo $row->name; ?></b></h3>
                         <p>Language: <?php echo getLanguage($row->language); ?></br>
                         Genre: <?php echo getGenre($row->genre); ?></p>
@@ -42,7 +51,7 @@
                             $count = $wpdb->get_var( "SELECT count(*) FROM codistan_images WHERE status=true AND (relatedTo=1 OR relatedTo=2) AND relatedTo_id=". $id);
                             if($count > 0){
                         ?>
-                        <div class='row' style="padding:30px">
+                        <div class='row' style="padding:30px" id="images_div">
                             <p style='font-size:24px' class='text-center'><b>IMAGES</b></p>
                             <div class='row'>
                             <?php
@@ -66,7 +75,7 @@
                             $count = $wpdb->get_var( "SELECT count(*) FROM codistan_articles WHERE status=true AND (relatedTo=1 OR relatedTo=2) AND relatedTo_id=". $id);
                             if($count > 0){
                         ?>
-                        <div class='row' style="padding:30px">
+                        <div class='row' style="padding:30px" id="articles_div">
                             <p style='font-size:24px' class='text-center'><b>ARTICLES</b></p>
                             <div class='row'>
                             <?php
@@ -115,9 +124,18 @@
                         <?php } else { ?>
                             <img src='/wp-content/uploads/codistan/default.jpg' width='160px' height='160px' style='max-width:160px; float: left; margin: 0px 20px 0px 0px;'>
                         <?php } ?>
+                        <a href="/contributions"><button style="float:right;margin:5px" class="btn btn-default">Contribute</button></a>
+                        <?php
+                            $imgs = $wpdb->get_var( "SELECT count(*) FROM codistan_images WHERE status=true AND relatedTo=4 AND relatedTo_id=". $id);
+                            $arts = $wpdb->get_var( "SELECT count(*) FROM codistan_articles WHERE status=true AND relatedTo=4 AND relatedTo_id=". $id);
+                        ?>
+                        <a href="#images_div"><button style="float:right;margin:5px" class="btn btn-default" <?php if($imgs < 1) echo "disabled"; ?>>Images</button></a>
+                        <a href="#articles_div"><button style="float:right;margin:5px" class="btn btn-default"<?php if($arts < 1) echo "disabled"; ?>>Articles</button></a>
+
                         <h3><b><?php echo $row->name; ?></b></h3>
                         <p>Director: <?php echo $row->director; ?></p>
             		  	<p><?php echo $row->description; ?></p>
+
 
                     <?php
                         break;
@@ -128,7 +146,7 @@
             $count = $wpdb->get_var( "SELECT count(*) FROM codistan_songs WHERE status=true AND movie=". $id);
             if($count > 0){
         ?>
-        <div class='row' style="padding:30px">
+        <div class='row' style="padding:30px" id="songs_div">
             <p style='font-size:24px' class='text-center'><b>SONGS</b></p>
             <div class="text-center embed-responsive embed-responsive-16by9" style="display:none; margin:20px;">
                 <iframe class="embed-responsive-item" id="video_player" width="80%" height="400px" frameborder="0" allowfullscreen></iframe>
@@ -159,7 +177,7 @@
             $count = $wpdb->get_var( "SELECT count(*) FROM codistan_images WHERE status=true AND relatedTo=4 AND relatedTo_id=". $id);
             if($count > 0){
         ?>
-        <div class='row' style="padding:30px">
+        <div class='row' style="padding:30px" id="images_div">
             <p style='font-size:24px' class='text-center'><b>IMAGES</b></p>
             <div class='row'>
             <?php
@@ -183,7 +201,7 @@
             $count = $wpdb->get_var( "SELECT count(*) FROM codistan_articles WHERE status=true AND relatedTo=4 AND relatedTo_id=". $id);
             if($count > 0){
         ?>
-        <div class='row' style="padding:30px">
+        <div class='row' style="padding:30px" id="articles_div">
             <p style='font-size:24px' class='text-center'><b>ARTICLES</b></p>
             <div class='row'>
             <?php

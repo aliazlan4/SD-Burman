@@ -243,6 +243,23 @@
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
+                    Rank
+                </div>
+                <div class="panel-body">
+                    <div class='form-group'>
+                        <label>
+                            <input type="checkbox" onclick="changeFilter('filter_rank_composer')" <?php if($_SESSION["filter_rank_composer"]) echo "checked"; ?>> Composer
+                        </label>
+                    </div>
+                    <div class='form-group'>
+                        <label>
+                            <input type="checkbox" onclick="changeFilter('filter_rank_singer')" <?php if($_SESSION["filter_rank_singer"]) echo "checked"; ?>> Singer
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" style="display:none;">
+                <div class="panel-heading">
                     Genres
                 </div>
                 <div class="panel-body">
@@ -305,6 +322,7 @@
 
     function getFilterQuery(){
         $language = "";
+        $rank = "";
         $genre = "";
         $director = "";
         $singer = "";
@@ -327,6 +345,20 @@
         if($language != "")
             $language = " AND (" . $language . ")";
 
+        if($_SESSION["filter_rank_composer"]){
+            $rank = "rank = 'composer'";
+        }
+        if($_SESSION["filter_rank_singer"]){
+            if($rank == "")
+                $rank = "rank = 'singer'";
+            else
+                $rank = $rank . " OR rank = 'singer'";
+        }
+        if($rank != "")
+            $rank = " AND (" . $rank . ")";
+        else
+            $rank = " AND (rank = '')";
+
         if($_SESSION["filter_genre_drama"]){
             $genre = "genre = 1";
         }
@@ -345,6 +377,6 @@
         if($_SESSION["filter_singer"] != "0")
             $singer = " AND (singers = '" . $_SESSION["filter_singer"] . "')";
 
-        return $language . $genre . $director . $singer;
+        return $language . $rank . $genre . $director . $singer;
     }
 ?>

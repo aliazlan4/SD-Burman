@@ -21,6 +21,8 @@ License: GPLv2 or later
 			$_SESSION["filter_language_hindi"] = true;
 			$_SESSION["filter_language_bengali"] = true;
 			$_SESSION["filter_language_other"] = true;
+			$_SESSION["filter_rank_composer"] = true;
+			$_SESSION["filter_rank_singer"] = true;
 			$_SESSION["filter_genre_drama"] = true;
 			$_SESSION["filter_genre_motherhood"] = true;
 			$_SESSION["filter_director"] = "0";
@@ -89,6 +91,7 @@ License: GPLv2 or later
 			genre TEXT DEFAULT '',
             actors TEXT DEFAULT '',
             media_url TEXT DEFAULT '',
+            rank TEXT DEFAULT '',
             featured BOOLEAN DEFAULT false,
 			year TEXT DEFAULT '',
             status BOOLEAN DEFAULT false,
@@ -215,4 +218,5 @@ License: GPLv2 or later
     include 'shortcode_songs_catalogue.php';
     include 'shortcode_search_page.php';
     include 'shortcode_detail_page.php';
+    include 'shortcode_event_page.php';
 ?>
